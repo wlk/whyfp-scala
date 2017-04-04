@@ -1,16 +1,45 @@
 import scala.language.higherKinds
 
-abstract class List[+T]
+abstract class List[+T] {
+  def string: String // Required to prevent default `toString` evaluation in Scala Worksheets
+}
 case object Nil extends List[Nothing] {
   override def toString = "Nil"
+  override def string = toString
 }
-case class Cons[T](h: T, tail: List[T]) extends List[T]
+
+class Cons[T](h: => T, t: => List[T]) extends List[T] {
+  val head = h
+  def tail: List[T] = {
+    println("calculating t = " + t)
+    t
+  }
+  //override def toString = s"Cons($head, $tail)"
+  override def string = s"Cons($head, $tail)"
+}
+
+object Cons {
+  def apply[T](h: T, tail: => List[T] ): Cons[T] = {
+    new Cons(h, tail)
+  }
+
+  def unapply[T](arg: Cons[T]): Option[(T, List[T])] = {
+    Some(arg.head, arg.tail)
+  }
+}
 
 val emptyList = Nil
 val singleElem = Cons(1, Nil)
 val twoElem = Cons(1, Cons(2, Nil))
 val threeElem = Cons(1, Cons(2, Cons(3, Nil)))
+threeElem.tail.string
 
+def f(i: Int): List[Int] = {
+  if(i == 0) Nil
+  else Cons(i, f(i-1))
+}
+f(4)
+/*
 def sum(list: List[Int]): Int = list match {
   case Nil => 0
   case Cons(h, tail) => h + sum(tail)
@@ -54,9 +83,4 @@ alltrue(Cons(false, Cons(false, Nil)))
 
 
 def appendSingle[T](elem: T, list: List[T]) = Cons(elem, list)
-
-def append[T](a: T, b: T) = {
-
-
-  foldr((a, b) => null, b, a)
-}
+*/
