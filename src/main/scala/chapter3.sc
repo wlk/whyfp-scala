@@ -39,7 +39,7 @@ def f(i: Int): List[Int] = {
   else Cons(i, f(i-1))
 }
 f(4)
-/*
+
 def sum(list: List[Int]): Int = list match {
   case Nil => 0
   case Cons(h, tail) => h + sum(tail)
@@ -83,4 +83,3 @@ alltrue(Cons(false, Cons(false, Nil)))
 
 
 def appendSingle[T](elem: T, list: List[T]) = Cons(elem, list)
-*/
