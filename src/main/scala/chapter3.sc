@@ -90,3 +90,16 @@ alltrue(Cons(false, Cons(false, Nil)))
 def append[T](a : List[T], b: List[T]): List[T] = foldr[T, List[T]](Cons(_, _), b, a)
 
 append(threeElem, twoElem).string
+
+def count(a: Any, n: Int) = n + 1
+
+def length(list: List[Any]) = foldr[Any, Int](count, 0, list)
+
+length(threeElem)
+
+def double(n: Int) = n * 2
+def fandcons[T](f: T => T, el: T, list: List[T]) = Cons(f(el), list)
+
+def doubleall(list: List[Int]) = foldr((x :Int, y: List[Int]) => Cons(x,y), Nil, list)
+
+doubleall(threeElem).string
