@@ -5,11 +5,11 @@ abstract class List[+T] {
 }
 case object Nil extends List[Nothing] {
   override def toString = "Nil"
-  override def string = toString
+  override def string: String = toString
 }
 
 class Cons[T](h: => T, t: => List[T]) extends List[T] {
-  val head = h
+  val head: T = h
   def tail: List[T] = t
   override def toString = s"Cons($head, ???)"
   override def string = s"Cons($head, ${tail.string})"
@@ -78,7 +78,7 @@ product(threeElem)
 def anytrue(l: List[Boolean]) = foldr[Boolean, Boolean](_ || _, false, l)
 
 anytrue(Cons(true, Cons(false, Nil)))
-alltrue(Cons(true, Cons(true, Nil)))
+anytrue(Cons(true, Cons(true, Nil)))
 anytrue(Cons(false, Cons(false, Nil)))
 
 def alltrue(l: List[Boolean]) = foldr[Boolean, Boolean](_ && _, true, l)
