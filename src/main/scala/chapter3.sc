@@ -153,5 +153,20 @@ def foldtree[F, G, A](f: (A, G) => F, g: (F, G) => G, a: G, tree: Node[A]): F = 
 def add = (a: Int, b: Int) => a+b
 def sumtree(tree: Node[Int]) = foldtree[Int, Int, Int](add, add, 0, tree)
 
-
 sumtree(testTree)
+
+def labels[A](t: Node[A]): List[A] = {
+  foldtree[List[A], List[A], A](Cons(_, _), append, Nil, t)
+}
+
+labels(testTree).string
+
+def maptree[A, B](t: Node[A], f: A => B): Node[B] =
+  foldtree(
+    (x: A, y: List[Node[B]]) => Node(f(x), y),
+    (x: Node[B], y: List[Node[B]]) => Cons(x, y),
+    Nil,
+    t
+  )
+
+maptree[Int, Int](testTree, _ * 1000).string
