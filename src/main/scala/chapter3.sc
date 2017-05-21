@@ -100,6 +100,13 @@ length(threeElem)
 def double(n: Int) = n * 2
 def fandcons[T](f: T => T, el: T, list: List[T]) = Cons(f(el), list)
 
-def doubleall(list: List[Int]) = foldr((x :Int, y: List[Int]) => Cons(x,y), Nil, list)
+def doubleall(list: List[Int]) = foldr((x :Int, y: List[Int]) => Cons(double(x),y), Nil, list)
 
 doubleall(threeElem).string
+
+def map[A, B](list: List[A], f: A => B): List[B] = foldr((x : A, y: List[B]) => Cons(f(x), y), Nil, list)
+
+map[Int, Int](threeElem, _ + 1337).string
+
+
+def summatrix(list: List[List[Int]]): Int = sum2(map(list, sum2))
