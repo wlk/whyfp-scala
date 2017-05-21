@@ -1,8 +1,7 @@
-import scala.language.higherKinds
-
-abstract class List[+T] {
+sealed abstract class List[+T] {
   def string: String // Required to prevent default `toString` evaluation in Scala Worksheets
 }
+
 case object Nil extends List[Nothing] {
   override def toString = "Nil"
   override def string: String = toString
@@ -16,7 +15,7 @@ class Cons[T](h: => T, t: => List[T]) extends List[T] {
 }
 
 object Cons {
-  def apply[T](h: T, tail: => List[T] ): Cons[T] = {
+  def apply[T](h: T, tail: => List[T]): Cons[T] = {
     new Cons(h, tail)
   }
 
@@ -110,3 +109,49 @@ map[Int, Int](threeElem, _ + 1337).string
 
 
 def summatrix(list: List[List[Int]]): Int = sum2(map(list, sum2))
+
+//////////////////////////////////////////         Trees           ///////////////////////////
+
+class Node[T](h: => T, t: => List[Node[T]]) {
+  val label = h
+  def subtrees: List[Node[T]] = t
+  override def toString = s"Node($label, ???)"
+  def string = s"Node($label, ${subtrees.string})"
+}
+
+object Node {
+  def apply[T](label: T, t: => List[Node[T]]): Node[T] = {
+    new Node(label, t)
+  }
+
+  def unapply[T](arg: Node[T]): Option[(T, List[Node[T]])] = {
+    Some(arg.label, arg.subtrees)
+  }
+}
+
+val singeElemTree = Node(1, Nil)
+val twoElemTree = Node(1, Cons(Node(2, Nil), Nil))
+val threeElemTree = Node(1, Cons(Node(2, Nil), Cons(Node(3, Nil), Nil)))
+
+val testTree =
+  Node(1,
+    Cons(Node(2, Nil),
+      Cons(Node(3,
+          Cons(Node(4, Nil), Nil)),
+        Nil)))
+
+
+def foldtree[F, G, A](f: (A, G) => F, g: (F, G) => G, a: G, tree: Node[A]): F = {
+  def foldSubtrees(subtrees: List[Node[A]]): G = subtrees match {
+    case Nil => a
+    case Cons(h, t) => g(foldtree(f, g, a, h), foldSubtrees(t))
+  }
+
+  f(tree.label, foldSubtrees(tree.subtrees))
+}
+
+def add = (a: Int, b: Int) => a+b
+def sumtree(tree: Node[Int]) = foldtree[Int, Int, Int](add, add, 0, tree)
+
+
+sumtree(testTree)
