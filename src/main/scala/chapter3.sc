@@ -112,37 +112,37 @@ def summatrix(list: List[List[Int]]): Int = sum2(map(list, sum2))
 
 //////////////////////////////////////////         Trees           ///////////////////////////
 
-class Node[T](h: => T, t: => List[Node[T]]) {
+class Tree[T](h: => T, t: => List[Tree[T]]) {
   val label = h
-  def subtrees: List[Node[T]] = t
-  override def toString = s"Node($label, ???)"
-  def string = s"Node($label, ${subtrees.string})"
+  def subtrees: List[Tree[T]] = t
+  override def toString = s"Tree($label, ???)"
+  def string = s"Tree($label, ${subtrees.string})"
 }
 
-object Node {
-  def apply[T](label: T, t: => List[Node[T]]): Node[T] = {
-    new Node(label, t)
+object Tree {
+  def apply[T](label: T, t: => List[Tree[T]]): Tree[T] = {
+    new Tree(label, t)
   }
 
-  def unapply[T](arg: Node[T]): Option[(T, List[Node[T]])] = {
+  def unapply[T](arg: Tree[T]): Option[(T, List[Tree[T]])] = {
     Some(arg.label, arg.subtrees)
   }
 }
 
-val singeElemTree = Node(1, Nil)
-val twoElemTree = Node(1, Cons(Node(2, Nil), Nil))
-val threeElemTree = Node(1, Cons(Node(2, Nil), Cons(Node(3, Nil), Nil)))
+val singeElemTree = Tree(1, Nil)
+val twoElemTree = Tree(1, Cons(Tree(2, Nil), Nil))
+val threeElemTree = Tree(1, Cons(Tree(2, Nil), Cons(Tree(3, Nil), Nil)))
 
 val testTree =
-  Node(1,
-    Cons(Node(2, Nil),
-      Cons(Node(3,
-          Cons(Node(4, Nil), Nil)),
+  Tree(1,
+    Cons(Tree(2, Nil),
+      Cons(Tree(3,
+          Cons(Tree(4, Nil), Nil)),
         Nil)))
 
 
-def foldtree[F, G, A](f: (A, G) => F, g: (F, G) => G, a: G, tree: Node[A]): F = {
-  def foldSubtrees(subtrees: List[Node[A]]): G = subtrees match {
+def foldtree[F, G, A](f: (A, G) => F, g: (F, G) => G, a: G, tree: Tree[A]): F = {
+  def foldSubtrees(subtrees: List[Tree[A]]): G = subtrees match {
     case Nil => a
     case Cons(h, t) => g(foldtree(f, g, a, h), foldSubtrees(t))
   }
@@ -151,20 +151,20 @@ def foldtree[F, G, A](f: (A, G) => F, g: (F, G) => G, a: G, tree: Node[A]): F = 
 }
 
 def add = (a: Int, b: Int) => a+b
-def sumtree(tree: Node[Int]) = foldtree[Int, Int, Int](add, add, 0, tree)
+def sumtree(tree: Tree[Int]) = foldtree[Int, Int, Int](add, add, 0, tree)
 
 sumtree(testTree)
 
-def labels[A](t: Node[A]): List[A] = {
+def labels[A](t: Tree[A]): List[A] = {
   foldtree[List[A], List[A], A](Cons(_, _), append, Nil, t)
 }
 
 labels(testTree).string
 
-def maptree[A, B](t: Node[A], f: A => B): Node[B] =
+def maptree[A, B](t: Tree[A], f: A => B): Tree[B] =
   foldtree(
-    (x: A, y: List[Node[B]]) => Node(f(x), y),
-    (x: Node[B], y: List[Node[B]]) => Cons(x, y),
+    (x: A, y: List[Tree[B]]) => Tree(f(x), y),
+    (x: Tree[B], y: List[Tree[B]]) => Cons(x, y),
     Nil,
     t
   )
