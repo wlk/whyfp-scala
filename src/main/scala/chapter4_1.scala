@@ -1,4 +1,4 @@
-object chapter4 {
+object chapter4_1 {
   // Rewrite of the Cons from chapter 3 to make Cons infinite
   // not really required but makes following functions slightly simpler
   // otherwise I would need to add additional checks ensuring that `X.tail is not Nil`
