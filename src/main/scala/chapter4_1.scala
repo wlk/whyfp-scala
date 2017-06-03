@@ -1,5 +1,3 @@
-import scala.annotation.tailrec
-
 object chapter4_1 {
   // Rewrite of the Cons from chapter 3 to make Cons infinite
   // not really required but makes following functions slightly simpler
