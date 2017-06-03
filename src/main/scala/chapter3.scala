@@ -1,17 +1,22 @@
 object chapter3 {
+
   sealed abstract class List[+T] {
     def string: String // Required to prevent default `toString` evaluation in Scala Worksheets
   }
 
   case object Nil extends List[Nothing] {
     override def toString = "Nil"
+
     override def string: String = toString
   }
 
   class Cons[T](h: => T, t: => List[T]) extends List[T] {
     val head: T = h
+
     def tail: List[T] = t
+
     override def toString = s"Cons($head, ???)"
+
     override def string = s"Cons($head, ${tail.string})"
   }
 

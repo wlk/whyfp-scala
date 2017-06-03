@@ -8,14 +8,14 @@ object chapter4_2 {
   def differentiate(h0: Double, f: Double => Double, x: Double) = map(easydiff(f, x))(repeat(halve, h0))
 
   def elimerror(n: Double)(list: Cons[Double]): Cons[Double] = list match {
-    case Cons(a, Cons(b, rest)) => Cons(b*Math.pow(2, n)-a / (Math.pow(2, n)-1), elimerror(n)(Cons(b, rest)))
+    case Cons(a, Cons(b, rest)) => Cons(b * Math.pow(2, n) - a / (Math.pow(2, n) - 1), elimerror(n)(Cons(b, rest)))
   }
 
   def order(list: Cons[Double]) = list match {
     case Cons(a, Cons(b, Cons(c, _))) =>
-      val result = Math.round(Math.log((a-c)/(b-c)-1))
+      val result = Math.round(Math.log((a - c) / (b - c) - 1))
 
-      if(result.isNaN || result == 0) 1L else result
+      if (result.isNaN || result == 0) 1L else result
   }
 
   def improve(s: Cons[Double]) = elimerror(order(s))(s)

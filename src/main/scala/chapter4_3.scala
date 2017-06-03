@@ -1,4 +1,5 @@
 object chapter4_3 {
+
   import chapter4_1._
 
   def easyintegrate(f: Double => Double)(a: Double, b: Double) = (f(a) + f(b)) * (b - a) / 2.0

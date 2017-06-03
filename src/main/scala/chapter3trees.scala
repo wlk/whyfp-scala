@@ -1,10 +1,14 @@
 import chapter3._
 
 object chapter3trees {
+
   class Tree[T](h: => T, t: => List[Tree[T]]) {
     val label = h
+
     def subtrees: List[Tree[T]] = t
+
     override def toString = s"Tree($label, ???)"
+
     def string = s"Tree($label, ${subtrees.string})"
   }
 
@@ -47,6 +51,7 @@ object chapter3trees {
   }
 
   def add = (a: Int, b: Int) => a + b
+
   def sumtree(tree: Tree[Int]) = foldtree[Int, Int, Int](add, add, 0, tree)
 
   def labels[A](t: Tree[A]): List[A] = {
