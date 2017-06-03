@@ -75,9 +75,9 @@ object chapter3 {
 
   def doubleall(list: List[Int]) = foldr((x: Int, y: List[Int]) => Cons(double(x), y), Nil, list)
 
-  def map[A, B](list: List[A], f: A => B): List[B] = foldr((x: A, y: List[B]) => Cons(f(x), y), Nil, list)
+  def map[A, B](list: List[A])(f: A => B): List[B] = foldr((x: A, y: List[B]) => Cons(f(x), y), Nil, list)
 
-  def summatrix(list: List[List[Int]]): Int = sum2(map(list, sum2))
+  def summatrix(list: List[List[Int]]): Int = sum2(map(list)(sum2))
 
   def main(args: Array[String]): Unit = {
     f(10).string
@@ -106,7 +106,7 @@ object chapter3 {
 
     doubleall(threeElem).string
 
-    map[Int, Int](threeElem, _ + 1337).string
+    map[Int, Int](threeElem)(_ + 1337).string
 
   }
 

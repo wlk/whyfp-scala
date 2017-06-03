@@ -29,9 +29,9 @@ object chapter3trees {
         Tree(2, Nil),
         Cons(
           Tree(
-          3,
-          Cons(Tree(4, Nil), Nil)
-        ),
+            3,
+            Cons(Tree(4, Nil), Nil)
+          ),
           Nil
         )
       )

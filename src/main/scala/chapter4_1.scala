@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 object chapter4_1 {
   // Rewrite of the Cons from chapter 3 to make Cons infinite
   // not really required but makes following functions slightly simpler
@@ -32,6 +34,15 @@ object chapter4_1 {
     } else {
       within(eps, rest)
     }
+  }
+
+  // redefined map for infinite Cons
+  def map[A, B](f: A => B)(list: Cons[A]): Cons[B] = list match {
+    case c: Cons[A] => Cons(f(c.head), map(f)(c.tail))
+  }
+
+  def foldr[T, Y](f: ((T, Y) => Y), list: Cons[T]): Y = list match {
+    case Cons(h, t) => f(h, foldr(f, t))
   }
 
   def sqrt(a0: Double, eps: Double, n: Int): Double = {
