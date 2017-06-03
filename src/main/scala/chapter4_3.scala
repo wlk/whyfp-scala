@@ -31,6 +31,6 @@ object chapter4_3 {
   def i1(f: Double => Double)(a: Double, b: Double) = within(0.001, integrate2(f)(a, b))
 
   def main(args: Array[String]): Unit = {
-    println(i1(x => x * x)(1.0, 2.0))
+    println(i1(x => x * x)(1.0, 2.0)) //2.33349609375
   }
 }
